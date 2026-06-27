@@ -22,8 +22,12 @@ services:
       # - "--access-mode=unrestricted"
     networks:
       - pg-shared
+      - openclaw
 
 networks:
   pg-shared:
     external: true
     name: ce6rks6g76aaohjfhfeg2fbc
+  openclaw:
+    external: true
+    name: tkfstsh2f3xko4cecdajjthn
