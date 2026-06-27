@@ -17,7 +17,7 @@ services:
       - "--sse-host=0.0.0.0"
       - "--sse-port=8000"
       # Recommended for production: read-only transactions + query timeout.
-      - "--access-mode=restricted"
+      - "--access-mode=unrestricted"
       # Development only — grants full read/write. Do NOT use against prod data.
       # - "--access-mode=unrestricted"
     networks:
