@@ -1,0 +1,27 @@
+services:
+  postgres-mcp:
+    image: crystaldba/postgres-mcp:latest
+    container_name: postgres-mcp
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      # PostgreSQL connection string. Override via .env or shell env.
+      DATABASE_URI: ${DATABASE_URI:-postgresql://postgres:postgres@postgres:5432/postgres}
+      # Optional: only needed for the experimental LLM-based index tuning feature.
+      # OPENAI_API_KEY: ${OPENAI_API_KEY}
+    command:
+      - "--transport=sse"
+      - "--sse-host=0.0.0.0"
+      - "--sse-port=8000"
+      # Recommended for production: read-only transactions + query timeout.
+      - "--access-mode=restricted"
+      # Development only — grants full read/write. Do NOT use against prod data.
+      # - "--access-mode=unrestricted"
+    networks:
+      - pg-shared
+
+networks:
+  pg-shared:
+    external: true
+    name: ce6rks6g76aaohjfhfeg2fbc

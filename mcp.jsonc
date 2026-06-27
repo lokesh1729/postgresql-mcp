@@ -1,0 +1,44 @@
+{
+  "mcpServers": {
+    // ----------------------------------------------------------------------
+    // Primary: SSE transport — connects to the postgres-mcp service deployed
+    // via docker-compose.yaml on Coolify. Replace the host with your Coolify
+    // app's public domain (or internal hostname if the client runs on the
+    // same Docker network).
+    // ----------------------------------------------------------------------
+    "postgres": {
+      "type": "sse",
+      "url": "https://postgres-mcp.your-coolify-domain.com/sse"
+    }
+
+    // ----------------------------------------------------------------------
+    // Local SSE — same docker-compose stack running on your machine.
+    // ----------------------------------------------------------------------
+    // "postgres-local": {
+    //   "type": "sse",
+    //   "url": "http://localhost:8000/sse"
+    // },
+
+    // ----------------------------------------------------------------------
+    // NOT RECOMMENDED: stdio variant that spawns a one-off container per
+    // client. Bypasses the Coolify deployment entirely; use only for
+    // isolated local debugging against a disposable database.
+    // ----------------------------------------------------------------------
+    // "postgres-stdio": {
+    //   "command": "docker",
+    //   "args": [
+    //     "run",
+    //     "-i",
+    //     "--rm",
+    //     "-e",
+    //     "DATABASE_URI",
+    //     "crystaldba/postgres-mcp:latest",
+    //     "--transport=stdio",
+    //     "--access-mode=restricted"
+    //   ],
+    //   "env": {
+    //     "DATABASE_URI": "postgresql://user:password@host.docker.internal:5432/dbname"
+    //   }
+    // }
+  }
+}
