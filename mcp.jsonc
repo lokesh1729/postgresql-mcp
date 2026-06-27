@@ -1,44 +1,23 @@
 {
+  // Consumer must be a container attached to the `pg-shared` Docker network
+  // (external name: ce6rks6g76aaohjfhfeg2fbc) so it can resolve the
+  // `postgres-mcp` service over Docker's internal DNS. The compose stack in
+  // docker-compose.yaml only `expose`s port 8000 — nothing is published to
+  // the host, so this endpoint is not reachable from the public internet.
   "mcpServers": {
-    // ----------------------------------------------------------------------
-    // Primary: SSE transport — connects to the postgres-mcp service deployed
-    // via docker-compose.yaml on Coolify. Replace the host with your Coolify
-    // app's public domain (or internal hostname if the client runs on the
-    // same Docker network).
-    // ----------------------------------------------------------------------
     "postgres": {
       "type": "sse",
-      "url": "https://postgres-mcp.your-coolify-domain.com/sse"
+      "url": "http://postgres-mcp:8000/sse"
     }
 
     // ----------------------------------------------------------------------
-    // Local SSE — same docker-compose stack running on your machine.
+    // Local debugging via SSH tunnel:
+    //   ssh -L 8000:postgres-mcp:8000 user@coolify-host
+    // then point your laptop MCP client here.
     // ----------------------------------------------------------------------
-    // "postgres-local": {
+    // "postgres-tunnel": {
     //   "type": "sse",
     //   "url": "http://localhost:8000/sse"
-    // },
-
-    // ----------------------------------------------------------------------
-    // NOT RECOMMENDED: stdio variant that spawns a one-off container per
-    // client. Bypasses the Coolify deployment entirely; use only for
-    // isolated local debugging against a disposable database.
-    // ----------------------------------------------------------------------
-    // "postgres-stdio": {
-    //   "command": "docker",
-    //   "args": [
-    //     "run",
-    //     "-i",
-    //     "--rm",
-    //     "-e",
-    //     "DATABASE_URI",
-    //     "crystaldba/postgres-mcp:latest",
-    //     "--transport=stdio",
-    //     "--access-mode=restricted"
-    //   ],
-    //   "env": {
-    //     "DATABASE_URI": "postgresql://user:password@host.docker.internal:5432/dbname"
-    //   }
     // }
   }
 }
