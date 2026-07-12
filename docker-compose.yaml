@@ -20,6 +20,18 @@ services:
       - "--access-mode=unrestricted"
       # Development only — grants full read/write. Do NOT use against prod data.
       # - "--access-mode=unrestricted"
+    # Probe the SSE endpoint using the image's bundled Python (no curl/wget in
+    # the container). urlopen returns 200 once the SSE stream is established.
+    healthcheck:
+      test:
+        - "CMD"
+        - "python"
+        - "-c"
+        - "import urllib.request,sys,socket; socket.setdefaulttimeout(2); sys.exit(0 if urllib.request.urlopen('http://localhost:8000/sse').status==200 else 1)"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
     networks:
       - coolify
       - openclaw
