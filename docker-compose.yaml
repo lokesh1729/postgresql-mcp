@@ -4,7 +4,7 @@ services:
     container_name: postgres-mcp
     restart: unless-stopped
     # No public port mapping — service is reachable only from containers
-    # attached to the pg-shared network (e.g. via http://postgres-mcp:8000/sse).
+    # attached to the coolify network (e.g. via http://postgres-mcp:8000/sse).
     expose:
       - "8000"
     environment:
@@ -21,13 +21,13 @@ services:
       # Development only — grants full read/write. Do NOT use against prod data.
       # - "--access-mode=unrestricted"
     networks:
-      - pg-shared
+      - coolify
       - openclaw
 
 networks:
-  pg-shared:
+  coolify:
     external: true
-    name: ce6rks6g76aaohjfhfeg2fbc
+    name: coolify
   openclaw:
     external: true
     name: tkfstsh2f3xko4cecdajjthn
